@@ -1,3 +1,5 @@
+import time
+import logging
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
@@ -5,6 +7,9 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+
+
+logging.getLogger().setLevel(logging.INFO)
 
 
 class WebpageNavigationBot:
@@ -15,6 +20,8 @@ class WebpageNavigationBot:
         self.driver.maximize_window()
         self.driver.get(url)
 
+    def close_driver(self):
+        self.driver.close()
 
 def decline_cookies(bot):
     '''Declines cookies in orioninc.com homepage'''
@@ -97,10 +104,17 @@ def apply_for_pythonTA(bot):
 
     state = bot.driver.find_element(By.ID, "input_7_7")
     state.send_keys("Vilnius")
+    
+    time.sleep(15)
 
+
+logging.info('Start of program')
 
 orion_bot = WebpageNavigationBot(url="https://www.orioninc.com/")
 decline_cookies(bot=orion_bot)
 navigate_to_careers_in_europe_page(bot=orion_bot)
 location_filters(bot=orion_bot)
 apply_for_pythonTA(bot=orion_bot)
+
+orion_bot.close_driver()
+logging.info('End of program')
