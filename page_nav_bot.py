@@ -12,8 +12,10 @@ from selenium.webdriver.support import expected_conditions as EC
 logging.getLogger().setLevel(logging.INFO)
 
 
+
 class WebpageNavigationBot:
     def __init__(self, url):
+        logging.info('Class initialization')
         self.options = Options()
         self.options.add_experimental_option('detach', True)
         self.driver = webdriver.Chrome(options=self.options)
@@ -21,21 +23,26 @@ class WebpageNavigationBot:
         self.driver.get(url)
 
     def close_driver(self):
+        logging.info('Closing browser window')
         self.driver.close()
 
 def decline_cookies(bot):
     '''Declines cookies in orioninc.com homepage'''
+    logging.info('Decline_cookies function started')
     try:
         bot.driver.implicitly_wait(5)
         decline_cookies_button = bot.driver.find_element(By.ID, "hs-eu-decline-button")
         decline_cookies_button.click()
     except NoSuchElementException:
         pass
+    logging.info('Decline_cookies function ended')
 
 
 def navigate_to_careers_in_europe_page(bot):
     '''This function hovers over "comapny" in orioninc.com home page and goes to carrer page.
     In the carrer page it finds job opportunities in Europe Link text and clicks it'''
+    logging.info('navigate_to_careers_in_europe_page function started')
+
     chain = ActionChains(bot.driver)
 
     random = bot.driver.find_element(By.ID, 'menu-28')
@@ -51,11 +58,14 @@ def navigate_to_careers_in_europe_page(bot):
 
     careers_in_europe = bot.driver.find_element(By.LINK_TEXT, "Europe")
     careers_in_europe.click()
+    logging.info('navigate_to_careers_in_europe_page function ended')
 
 
 def location_filters(bot):
     '''This function resets all filters in carrer page.
       After resettings all filters it filters all job offers in Lithuania and then Vilnius'''
+    logging.info('location_filters function started')
+
     wait = WebDriverWait(bot.driver, 10)        
 
     reset_filters = bot.driver.find_element(By.XPATH, '//*[@id="search-filter"]/div[2]/a')
@@ -72,10 +82,13 @@ def location_filters(bot):
 
     jobs_in_Vilnius = bot.driver.find_element(By.XPATH, '//*[@id="search-filter"]/div[5]/div/div[9]/div')
     jobs_in_Vilnius.click()
+    logging.info('location_filters function ended')
 
 
 def apply_for_pythonTA(bot):
     '''This function finds the exact job we want to apply for, clicks it and fills up the form'''
+
+    logging.info('apply_for_pythonTA function started')
     job = bot.driver.find_element(By.LINK_TEXT, "Python Test Automation Engineer")
     job.click()
 
@@ -106,6 +119,7 @@ def apply_for_pythonTA(bot):
     state.send_keys("Vilnius")
     
     time.sleep(15)
+    logging.info('apply_for_pythonTA function ended')
 
 
 logging.info('Start of program')
